@@ -1,0 +1,5 @@
+Analisis no 9:
+Script break_routing.sh di router Shigeru merusak jalur komunikasi antara Lilith dan Armisael melalui tiga perubahan: mematikan ip_forward (0), mengganti default route Shigeru ke gateway yang salah (MKGW), serta menambahkan rute blackhole untuk subnet Dogma dan ip rule prioritas 90 yang mengarahkan lalu lintas masuk dari LAN ke table 100 (unreachable). Akibatnya, Shigeru berhenti meneruskan paket dan memblokir rute balik sehingga ping dari Lilith ke Armisael gagal meski Armisael masih bisa menjangkau gateway-nya sendiri.
+
+Analisis no 10:
+Script break_nat.sh merusak akses internet (8.8.8.8) khusus untuk subnet Cage (10.73.4.48/29) melalui dua aturan di POSTROUTING tabel nat: Misato menambahkan SNAT --to-source 172.31.99.1 untuk paket keluar dari Cage, dan Gendo menyisipkan RETURN di urutan pertama untuk paket dari Cage ke interface WAN sehingga melewati MASQUERADE. Subnet Intel (Spy) tidak terdampak karena aturan hanya menargetkan subnet Cage, sedangkan ping antar-LAN ke Lilith tetap berjalan normal karena tidak melalui proses NAT keluar ke internet.
